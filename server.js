@@ -11,7 +11,7 @@ router.use((req, res, next) => {
     next();
 });
 
-router.get('/actors',(req, res) => {
+router.get('/actors', (req, res) => {
     let data = actorsController.getList(req, res);
 });
 
@@ -27,8 +27,6 @@ router.use((req, res, next) => {
     res.statusCode = 404;
     res.end();
 });
-
-
 
 http.createServer(router).listen(3000, err => {
     if (err) {
