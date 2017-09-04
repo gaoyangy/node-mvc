@@ -9,8 +9,7 @@ module.exports = () => {
         console.info('New request arrived');
         next();
     });
-
-    router.get('/actors', (req, res) => {
+    router.get('/', (req, res) => {
         let data = actorsController.getList(req, res);
     });
 
