@@ -1,5 +1,5 @@
 const http = require('http');
-const router = require('./router')();
+const router = require('../router')();
 const server = http.createServer(router)
 const io = require('socket.io');
 const socketIo = io();

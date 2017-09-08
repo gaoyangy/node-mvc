@@ -1,9 +1,9 @@
-const router = require('./lib/router')((err, req, res) => {
+const router = require('../lib/router')((err, req, res) => {
     console.error(err);
     res.statusCode = 500;
     res.end(err);
 });
-const actorsController = require('./controllers/actors');
+const actorsController = require('../controllers/actors');
 module.exports = () => {
     router.use((req, res, next) => {
         console.info('New request arrived');
@@ -22,9 +22,6 @@ module.exports = () => {
     });
 
     router.use((req, res, next) => {
-        if (req.url === '/') {
-            req.url = '/actors'
-        }
         res.statusCode = 404;
         res.end();
     });
