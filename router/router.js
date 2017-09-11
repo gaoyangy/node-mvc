@@ -13,7 +13,7 @@ module.exports = () => {
         let data = actorsController.getList(req, res);
     });
 
-    router.get('/actors/:name', (req, res) => {
+    router.get('/actors', (req, res) => {
         actorsController.getActorByName(req, res);
     });
 
