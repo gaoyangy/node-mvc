@@ -1,9 +1,7 @@
 const actors = require('./test-data');
 
 exports.getList = () => {
-    setTimeout(() => {
-       return actors
-    },1500)
+    return actors
 };
 
 exports.getActorByName = (name) => actors.filter(actor => {

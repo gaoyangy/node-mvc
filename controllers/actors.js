@@ -1,10 +1,10 @@
 //const actorsTemplate = require('../views/actors-list');
 const actorsModel = require('../models/actors');
 const render = require('../lib/readFile')
-exports.getActorByName = function(req, res) {
-    let data = actorsModel.getList();
+exports.getActorByName = async function(req, res) {
+    let data = await actorsModel.getList();
     console.log(11111)
-    res.end(JSON.stringify(11111111111));
+    res.end(JSON.stringify(data));
 };
 
 
