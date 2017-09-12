@@ -7,5 +7,8 @@ io.sockets.on('connection', function(socket) {
     console.log('User connected');
     socket.on('message', function() {
         socket.send('hi');
+        setInterval(() => {
+            socket.send(1111)
+        }, 300)
     });
 });

@@ -6,8 +6,6 @@ exports.getActorByName = async function(req, res) {
     console.log(11111)
     res.end(JSON.stringify(data));
 };
-
-
 exports.getActorsByYearAndCountry = (req, res) => {
     const data = actorsModel.getActorsByYearAndCountry(req.params.year, req.params.country);
     const htmlStr = actorsTemplate.build(data);
