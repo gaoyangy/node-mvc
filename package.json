@@ -11,5 +11,9 @@
     "node"
   ],
   "author": "gaoyangyang",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "redis": "^2.8.0",
+    "socket.io": "^2.0.3"
+  }
 }

@@ -3,8 +3,12 @@ const actorsModel = require('../models/actors');
 const render = require('../lib/readFile')
 exports.getActorByName = async function(req, res) {
     let data = await actorsModel.getList();
-    console.log(11111)
-    res.end(JSON.stringify(data));
+    console.log(req,res)
+    res.writeHead(200, {
+        'Content-Type': 'text/html'
+    });
+    let tpl = render.viewEngine('index.html', {})
+    res.end(tpl);
 };
 exports.getActorsByYearAndCountry = (req, res) => {
     const data = actorsModel.getActorsByYearAndCountry(req.params.year, req.params.country);
