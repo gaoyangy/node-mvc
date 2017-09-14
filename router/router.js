@@ -49,6 +49,9 @@ module.exports = () => {
     router.post('/actors', (req, res) => {
         actorsController.getActorByName(req, res);
     });
+    router.post('/login', (req, res) => {
+        actorsController.getActorByName(req, res);
+    });
     router.get('/actors', (req, res) => {
         actorsController.getActorByName(req, res);
     });

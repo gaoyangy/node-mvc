@@ -15,7 +15,7 @@
         return new Promise(function(resolve, reject) {
             var XHR = new XMLHttpRequest();
             XHR.open(method, url, true);
-            XHR.send();
+            XHR.send({});
             XHR.onreadystatechange = function() {
                 if (XHR.readyState == 4) {
                     if (XHR.status == 200) {
@@ -34,7 +34,7 @@
     }
 
     function loadXMLDoc() {
-        http('/actors', 'GET').then(data => {
+        http('/login', 'POST').then(data => {
             document.getElementById("myDiv").innerHTML = data
         }).catch(err => {
             new Error(err)
