@@ -4,7 +4,7 @@ const router = require('../lib/router')((err, req, res) => {
     res.end(err);
 });
 const fs = require('fs')
-//
+    //
 const MIME_TYPE = {
     "css": "text/css",
     "gif": "image/gif",
@@ -33,40 +33,30 @@ module.exports = () => {
         next();
     });
     router.get('/', (req, res) => {
-        fs.readFile('./index.html', function(err){
-            if(err) {
-                res.writeHead(404, { 'Content-Type':'text/plain; charset="UTF-8"' });
+        fs.readFile('./index.html', function(err) {
+            if (err) {
+                res.writeHead(404, { 'Content-Type': 'text/plain; charset="UTF-8"' });
                 res.write(err.message);
                 res.end();
             } else {
-                res.writeHead(200, { 'Content-Type' : 'text/html; charset=UTF-8' });
+                res.writeHead(200, { 'Content-Type': 'text/html; charset=UTF-8' });
                 res.end(fs.readFileSync("./index.html"));
             }
         });
         //let data = actorsController.getActorByName(req, res);
     });
 
+    router.post('/actors', (req, res) => {
+        actorsController.getActorByName(req, res);
+    });
     router.get('/actors', (req, res) => {
         actorsController.getActorByName(req, res);
     });
-
     router.get('/actors/:year/:country', (req, res) => {
         actorsController.getActorsByYearAndCountry(req, res);
     });
 
     router.use((req, res, next) => {
-        if(req.url.indexOf('.js')){
-            fs.readFile(__dirname+'../'+req.url, function(err){
-                if(err) {
-                    res.writeHead(404, { 'Content-Type':'text/plain; charset="UTF-8"' });
-                    res.write(err.message);
-                    res.end();
-                } else {
-                    res.writeHead(200, { 'Content-Type' : 'text/html; charset=UTF-8' });
-                    res.end(fs.readFileSync(req.url));
-                }
-            });
-        }
         res.statusCode = 404;
         res.end();
     });

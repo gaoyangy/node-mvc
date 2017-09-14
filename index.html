@@ -1,74 +1,33 @@
 <!DOCTYPE html>
 <meta charset="utf-8" />
-<title>WebSocket Test</title>
-<script src="https://apps.bdimg.com/libs/jquery/2.1.4/jquery.min.js">
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io.js" type="text/javascript"></script>
-<script src="./lib/Websocket.js" type="text/javascript"></script>
+<title>login</title>
+
+<body>
+    <div id="myDiv">
+        <h2>使用 AJAX 修改该文本内容</h2>
+    </div>
+    <p>First name: <input type="text" name="user" /></p>
+    <p>Last name: <input type="password" name="password" /></p>
+    <button type="button" onclick="loadXMLDoc()">修改内容</button>
+</body>
 <script>
-    let userInfo = {
-        loginUserId: 555,
-        loginDeptId: 1,
-        loginRoleId: 2
+    function loadXMLDoc() {
+        var xmlhttp;
+        if (window.XMLHttpRequest) {
+            //  IE7+, Firefox, Chrome, Opera, Safari 浏览器执行代码
+            xmlhttp = new XMLHttpRequest();
+        } else {
+            // IE6, IE5 浏览器执行代码
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.onreadystatechange = function() {
+            if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                document.getElementById("myDiv").innerHTML = xmlhttp.responseText;
+            }
+        }
+        xmlhttp.open("GET", "/actors", true);
+        xmlhttp.send();
     }
-    this.message(userInfo)
-
-    function co() {
-        // $.ajax({
-        //     url: "http://127.0.0.1:3000/actors",
-        //     async: true,
-        //     data: {
-        //         zipcode: ''
-        //     },
-        //     dataType: "jsonp",
-        //     jsonp: "callback",
-        //     jsonpCallback: "success_jsonpCallback",
-        //     success: function(result) {
-        //         console.log(result)
-        //     },
-        //     error: function(err) {
-        //         console.log(err)
-        //     }
-        // });
-        $.ajax({
-            type: "get",
-            async: false,
-            url: "http://127.0.0.1:3000/actors",
-            dataType: "jsonp",
-            jsonp: "callback", //传递给请求处理程序或页面的，用以获得jsonp回调函数名的参数名(一般默认为:callback)
-            jsonpCallback: "flightHandler", //自定义的jsonp回调函数名称，默认为jQuery自动生成的随机函数名，也可以写"?"，jQuery会自动为你处理数据
-            error: function(err) {
-                alert(err.then(e => {
-                    console.log(e)
-                }));
-            },
-            success: function(json) {
-                alert('您查询到航班信息：票价： ' + json.price + ' 元，余票： ' + json.tickets + ' 张。');
-            },
-        });
-    }
-    // const socket = io('http://192.168.100.41:8888',{
-    //     query: 'loginUserId=555&loginDeptId=1&loginRoleId=2'
-    // });
-    // socket.on('connect', function () {
-    //   console.log('已连接')
-    //   socket.send('hi');
-
-    // socket.on('channel-message', function (msg) {
-    //     // my msg
-    //     console.log(msg,'msg')
-    // });
-    // socket.on('message-error', function (msg) {
-    //     // my msg
-    //     console.log(msg,'msg')
-    // });
-    // socket.on('disconnect', function () {
-    //   console.log('连接终断')
-    //   // socket.emit('user disconnected');
-    // });
-    // });
 </script>
-<h2 onclick="co()">WebSocket Test</h2>
-<div id="output"></div>
 
 </html>
