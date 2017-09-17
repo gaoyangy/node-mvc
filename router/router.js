@@ -4,6 +4,7 @@ const router = require('../lib/router')((err, req, res) => {
     res.end(err);
 });
 const fs = require('fs')
+const readFile = require('../readfile')
     //
 const MIME_TYPE = {
     "css": "text/css",
@@ -60,8 +61,8 @@ module.exports = () => {
     });
 
     router.use((req, res, next) => {
-        res.statusCode = 404;
-        res.end();
+        readFile(res,req)
+
     });
     return router
 }

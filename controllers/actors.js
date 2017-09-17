@@ -1,9 +1,24 @@
 //const actorsTemplate = require('../views/actors-list');
 const actorsModel = require('../models/actors');
+const User = require('../models/user');
 const render = require('../lib/readFile')
-exports.getActorByName = async function(req, res) {
-    let data = await actorsModel.getList();
-    console.log(req, res)
+exports.getActorByName =  async function(req, res) {
+    let data = {}
+    let recv = await User.findName(req.body);
+    console.log(req.body.userName,recv[0].user_name)
+    if (req.body.userName === recv[0].user_name) {
+        if(req.body.password !== recv[0].password){
+            data.msg ='密码错误！'
+            data.error= 1
+        }else{
+            data.msg ='登陆成功！'
+            data.error= 0
+        }
+    }else{
+        data.msg ='用户名不存在！'
+        data.error= 1
+    }
+    //console.log(req, res)
     res.writeHead(200, {
         'Content-Type': 'text/html'
     });

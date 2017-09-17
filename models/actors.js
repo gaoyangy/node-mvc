@@ -1,7 +1,9 @@
 const actors = require('./test-data');
-
+const db = require('../config/database')
 exports.getList = () => {
-    return actors
+
+     
+    return 
 };
 
 exports.getActorByName = (name) => actors.filter(actor => {

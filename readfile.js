@@ -1,8 +1,5 @@
-var http=require("http");
-var url=require("url");
-var fs=require("fs");
-var path=require("path");
-var MIME_TYPE = {
+const fs=require("fs");
+const MIME_TYPE = {
     "css": "text/css",
     "gif": "image/gif",
     "html": "text/html",
@@ -22,9 +19,20 @@ var MIME_TYPE = {
     "wmv": "video/x-ms-wmv",
     "xml": "text/xml"
 };
-function start(router){
 
-    http.createServer(onRequest).listen(8888);
-    console.log("Server runing at port:8888.");
+module.exports = (res, req) => {
+    for (let fileType in MIME_TYPE) {
+        if (req.url.includes('.'+fileType)) {
+            fs.readFile('.'+req.url, function(err) {
+                if (err) {
+                    res.writeHead(404, { 'Content-Type': `${MIME_TYPE[fileType]}; charset="UTF-8"` });
+                    res.write(err.message);
+                    res.end();
+                } else {
+                    res.writeHead(200, { 'Content-Type': `${MIME_TYPE[fileType]}; charset="UTF-8"` });
+                    res.end(fs.readFileSync('.'+req.url));
+                }
+            });
+        }
     }
-exports.start=start;
+};
