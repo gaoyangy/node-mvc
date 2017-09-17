@@ -12,12 +12,7 @@ const redis = new Redis({
     password: '',
     db: 0
 })
-
 io.on('connection', function(socket) {
-    redis.set('foo', 'bar');
-    redis.get('foo', function(err, result) {
-        console.log(result);
-    });
     socket.on('foo', function(data) {
         console.log(data);
         socket.send(data);
