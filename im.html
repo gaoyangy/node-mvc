@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <meta charset="utf-8" />
-<title>login</title>
+<title>im</title>
 <script src="./utils/require.js" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" href="./css/style.css">
 <body>
@@ -32,11 +32,12 @@
     require.config({
         paths: {
             jquery: './lib/jquery-3.2.1.min',
-            //socket: 'https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io',
+            socket: './lib/socket.io',
             http: './utils/http'
         }
     });
-　　require(['jquery', 'http']);
+　　require(['jquery', 'http', 'socket']);
+    
     function loadXMLDoc() {
         let userName = document.getElementById("userName").value;
         let password = document.getElementById("password").value;
@@ -44,8 +45,9 @@
             userName : userName,
             password : password
         }
+        console.log(socket)
         http('POST', '/login', reqBody).then(data => {
-            window.location.href="/im.html";
+            window.location.href="jb51.jsp";
         }).catch(err => {
             new Error(err)
         })
