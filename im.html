@@ -45,7 +45,7 @@
             userName : userName,
             password : password
         }
-        console.log(socket)
+        //console.log(socket)
         http('POST', '/login', reqBody).then(data => {
             window.location.href="jb51.jsp";
         }).catch(err => {
