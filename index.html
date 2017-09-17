@@ -3,28 +3,31 @@
 <title>login</title>
 <script src="./utils/require.js" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" href="./css/style.css">
+
 <body>
-        <div class="sign-index">
-                <div class="container">
-                  <section id="content">
-                    <form>
-                      <h1>IM</h1>
-                      <div>
-                        <input type="text" placeholder="用户名" required="" id="userName"/>
-                      </div>
-                      <div>
-                        <input type="password" placeholder="密码" required="" id="password"/>
-                      </div>
-                      <div>
+    <div class="sign-index">
+        <div class="container">
+            <section id="content">
+                <form>
+                    <h1>IM</h1>
+                    <div>
+                        <input type="text" placeholder="用户名" required="" id="userName" />
+                    </div>
+                    <div>
+                        <input type="password" placeholder="密码" required="" id="password" />
+                    </div>
+                    <div>
                         <span class="help-block u-errormessage" id="js-server-helpinfo">&nbsp;</span>
-                      <div>
-                        <!-- <input type="submit" value="Log in" /> -->
-                        <input type="button" onclick="loadXMLDoc()" value="登录" class="btn btn-primary" id="js-btn-login"/>
-                        <a href="#">忘记密码?</a>
-                        <!-- <a href="#">Register</a> -->
-                      </div>
-                    </form><!-- form -->
-                  </section><!-- content -->
+                        <div>
+                            <!-- <input type="submit" value="Log in" /> -->
+                            <input type="button" onclick="loadXMLDoc()" value="登录" class="btn btn-primary" id="js-btn-login" />
+                            <a href="#">忘记密码?</a>
+                            <!-- <a href="#">Register</a> -->
+                        </div>
+                </form>
+                <!-- form -->
+            </section>
+            <!-- content -->
             </div>
         </div>
 </body>
@@ -35,19 +38,24 @@
             //socket: 'https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.3/socket.io',
             http: './utils/http'
         }
-    });
-　　require(['jquery', 'http']);
+    });　　
+    require(['jquery', 'http']);
+
     function loadXMLDoc() {
         let userName = document.getElementById("userName").value;
         let password = document.getElementById("password").value;
         let reqBody = {
-            userName : userName,
-            password : password
+            userName: userName,
+            password: password
         }
         http('POST', '/login', reqBody).then(data => {
-            window.location.href="/im.html";
+            if (data) {
+                localStorage.setItem('userInfo', JSON.stringify(data.userInfo));
+                window.location.href = "/im.html";
+            }
         }).catch(err => {
-            new Error(err)
+            alert(err.msg)
+            console.log(err)
         })
     }
 </script>

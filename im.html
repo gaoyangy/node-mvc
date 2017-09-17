@@ -1,57 +1,34 @@
 <!DOCTYPE html>
 <meta charset="utf-8" />
 <title>im</title>
-<script src="./utils/require.js" type="text/javascript"></script>
+<script src="./lib/socket.io.js" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" href="./css/style.css">
+
 <body>
-        <div class="sign-index">
-                <div class="container">
-                  <section id="content">
-                    <form>
-                      <h1>IM</h1>
-                      <div>
-                        <input type="text" placeholder="用户名" required="" id="userName"/>
-                      </div>
-                      <div>
-                        <input type="password" placeholder="密码" required="" id="password"/>
-                      </div>
-                      <div>
-                        <span class="help-block u-errormessage" id="js-server-helpinfo">&nbsp;</span>
-                      <div>
-                        <!-- <input type="submit" value="Log in" /> -->
-                        <input type="button" onclick="loadXMLDoc()" value="登录" class="btn btn-primary" id="js-btn-login"/>
-                        <a href="#">忘记密码?</a>
-                        <!-- <a href="#">Register</a> -->
-                      </div>
-                    </form><!-- form -->
-                  </section><!-- content -->
-            </div>
-        </div>
+    <div id="messagelist" style="width:500px;height:300px">
+
+    </div>
+    <div>
+        <input id="msg">
+        <button id="sendBtn">发送</button>
+    </div>
 </body>
 <script>
-    require.config({
-        paths: {
-            jquery: './lib/jquery-3.2.1.min',
-            socket: './lib/socket.io',
-            http: './utils/http'
-        }
-    });
-　　require(['jquery', 'http', 'socket']);
-    
-    function loadXMLDoc() {
-        let userName = document.getElementById("userName").value;
-        let password = document.getElementById("password").value;
-        let reqBody = {
-            userName : userName,
-            password : password
-        }
-        //console.log(socket)
-        http('POST', '/login', reqBody).then(data => {
-            window.location.href="jb51.jsp";
-        }).catch(err => {
-            new Error(err)
-        })
+    var socket = io.connect('127.0.0.1:3000'), //与服务器进行连接
+        button = document.getElementById('sendBtn'),
+        inputData = document.getElementById('msg'),
+        messagelist = document.getElementById('messagelist');
+
+    button.onclick = function() {
+        let userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        userInfo.message = inputData.value
+        socket.emit('foo', userInfo); //发送一个名为foo的事件，并且传递一个字符串数据‘hello’
     }
+    socket.on('msg', function(data) {
+        var msglist = document.createElement("p");
+        msglist.innerHTML = data.userInfo.user_name + '说：' + data.userInfo.message
+        messagelist.appendChild(msglist)
+    })
 </script>
 
 </html>
