@@ -5,7 +5,16 @@ const render = require('../lib/readFile')
 exports.getActorByName =  async function(req, res) {
     let data = {}
     let recv = await User.findName(req.body);
-    console.log(req.body.userName,recv[0].user_name)
+    if (!recv.length) {
+        data.msg ='没有此用户！'
+        data.error= 0
+            //console.log(req, res)
+    res.writeHead(200, {
+        'Content-Type': 'text/html'
+    });
+    //let tpl = render.viewEngine('index.html', {})
+    return res.end(JSON.stringify(data));
+    }
     if (req.body.userName === recv[0].user_name) {
         if(req.body.password !== recv[0].password){
             data.msg ='密码错误！'
@@ -14,9 +23,6 @@ exports.getActorByName =  async function(req, res) {
             data.msg ='登陆成功！'
             data.error= 0
         }
-    }else{
-        data.msg ='用户名不存在！'
-        data.error= 1
     }
     //console.log(req, res)
     res.writeHead(200, {
