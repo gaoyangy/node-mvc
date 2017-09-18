@@ -10,12 +10,12 @@ exports.getActorByName = async function(req, res) {
         data.error = 1
             //console.log(req, res)
         res.writeHead(200, {
-            'Content-Type': 'text/html'
+            'Content-Type': 'application/json'
         });
         //let tpl = render.viewEngine('index.html', {})
         return res.end(JSON.stringify(data));
     }
-    if (req.body.userName === recv[0].user_name) {
+    if (req.body.user_name === recv[0].user_name) {
         if (req.body.password !== recv[0].password) {
             data.msg = '密码错误！'
             data.error = 1
@@ -27,22 +27,29 @@ exports.getActorByName = async function(req, res) {
     }
     //console.log(req, res)
     res.writeHead(200, {
-        'Content-Type': 'text/html'
+        'Content-Type': 'application/json'
     });
     //let tpl = render.viewEngine('index.html', {})
     res.end(JSON.stringify(data));
 };
-exports.login = async function(req, res) {
-    let data = await actorsModel.getList();
-    let resBody = {
-        msg: '登陆成功',
-        error: 0
+//
+exports.getUuid = async () => {
+    let getUuid = Math.floor(Math.random()*90000)+10000;
+    let id = await User.findId(getUuid);
+    if (id.length) {
+        this.getUuid()
+    } else {
+        return getUuid
     }
+},
+exports.registerUser = async function(req, res) {
+    req.body.uuid = await this.getUuid();
+    let data = await User.addUser(req.body);
     res.writeHead(200, {
-        'Content-Type': 'text/html'
+        'Content-Type': 'application/json'
     });
     //let tpl = render.viewEngine('index.html', {})
-    res.end(JSON.stringify(resBody));
+    res.end(JSON.stringify({userInfo:req.body}));
 };
 exports.getActorsByYearAndCountry = (req, res) => {
     const data = actorsModel.getActorsByYearAndCountry(req.params.year, req.params.country);

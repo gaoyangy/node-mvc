@@ -1,7 +1,7 @@
 var db = require('../config/database');
 
 
-exports.find = (id, fn) => {
+exports.findId = (id, fn) => {
   let sql = `SELECT * FROM im WHERE uuid =${id}`
   return new Promise((resolve, reject) => {
     db.getConnection(function(err, connection) {
@@ -11,7 +11,7 @@ exports.find = (id, fn) => {
       // make the query
       connection.query(sql, function(err, results) {
           if (err) {
-            reject(false);
+            reject(err);
           }else {
             resolve(results);
           }
@@ -20,7 +20,7 @@ exports.find = (id, fn) => {
   })
 }
 exports.findName = (params, fn) => {
-  let sql = `SELECT * FROM im WHERE user_name ='${params.userName}'`
+  let sql = `SELECT * FROM im WHERE user_name ='${params.user_name}'`
   return new Promise((resolve, reject) => {
     db.getConnection(function(err, connection) {
       if (err) {
@@ -29,8 +29,28 @@ exports.findName = (params, fn) => {
       // make the query
       connection.query(sql, function(err, results) {
           if (err) {
-            reject(false);
+            reject(err);
           }else {
+            resolve(results);
+          }
+      });
+  });
+  });
+}
+
+exports.addUser = (params, fn) => {
+  let sql = `INSERT INTO im  VALUES  (${params.uuid},'${params.user_name}','${params.password}')`
+  return new Promise((resolve, reject) => {
+    db.getConnection(function(err, connection) {
+      if (err) {
+        reject(err);
+      }
+      // make the query
+      connection.query(sql, function(err, results) {
+          if (err) {
+            reject(err);
+          }else {
+            results.status = true
             resolve(results);
           }
       });

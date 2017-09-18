@@ -47,8 +47,8 @@ module.exports = () => {
         //let data = actorsController.getActorByName(req, res);
     });
 
-    router.post('/actors', (req, res) => {
-        actorsController.getActorByName(req, res);
+    router.post('/register', (req, res) => {
+        actorsController.registerUser(req, res);
     });
     router.post('/login', (req, res) => {
         actorsController.getActorByName(req, res);

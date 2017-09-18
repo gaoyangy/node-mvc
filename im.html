@@ -18,7 +18,12 @@
         button = document.getElementById('sendBtn'),
         inputData = document.getElementById('msg'),
         messagelist = document.getElementById('messagelist');
-
+    socket.on('connect', function () {
+        let userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        socket.send(userInfo);
+    socket.on('message', function (msg) {
+      // my msg
+    });
     button.onclick = function() {
         let userInfo = JSON.parse(localStorage.getItem('userInfo'));
         userInfo.message = inputData.value
@@ -28,6 +33,7 @@
         var msglist = document.createElement("p");
         msglist.innerHTML = data.userInfo.user_name + '说：' + data.userInfo.message
         messagelist.appendChild(msglist)
+    })
     })
 </script>
 
