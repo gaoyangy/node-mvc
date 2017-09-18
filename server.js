@@ -15,7 +15,7 @@ const redis = new Redis({
 io.on('connection', function(socket) {
     socket.on('foo', function(data) {
         console.log(data);
-        socket.send(data);
+        //socket.send(data);
         io.emit('msg', { error: 0, userInfo: data });
     });
     socket.on('disconnect', function() {

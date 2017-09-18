@@ -48,6 +48,7 @@
             user_name: user_name,
             password: password
         }
+        console.log($)
         http('POST', '/login', reqBody).then(data => {
             if (data) {
                 localStorage.setItem('userInfo', JSON.stringify(data.userInfo));
