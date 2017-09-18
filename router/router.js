@@ -28,6 +28,7 @@ const MIME_TYPE = {
 };
 //
 const actorsController = require('../controllers/actors');
+const messageController = require('../controllers/message');
 module.exports = () => {
     router.use((req, res, next) => {
         console.info('New request arrived');
@@ -53,15 +54,15 @@ module.exports = () => {
     router.post('/login', (req, res) => {
         actorsController.getActorByName(req, res);
     });
-    router.get('/actors', (req, res) => {
-        actorsController.getActorByName(req, res);
+    router.post('/more/message', (req, res) => {
+        messageController.getMsgList(req, res);
     });
     router.get('/actors/:year/:country', (req, res) => {
         actorsController.getActorsByYearAndCountry(req, res);
     });
 
     router.use((req, res, next) => {
-        readFile(res,req)
+        readFile(res, req)
     });
     return router
 }
