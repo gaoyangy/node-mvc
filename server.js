@@ -21,8 +21,11 @@ io.on('connection', function(socket) {
             })
         }
     });
-    socket.on('disconnect', function() {
-        io.emit('user disconnected');
-    });
+    socket.on('reconnect', function() {
+        console.log("sadasdfas");
 
+    });
+    socket.on('disconnect', function(data) {
+        console.log(data,socket)
+    });
 });
