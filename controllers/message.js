@@ -1,5 +1,22 @@
 const Message = require('../models/message');
 const Utils = require('../utils/utils');
+exports.getMsgList = async function(req, res) {
+    let new_time = Utils.Dates.Format("yyyy-MM-dd hh:mm:ss");
+    let data = await Message.getMsgList(req.body, new_time);
+    if (data) {
+        res.writeHead(200, {
+            'Content-Type': 'application/json'
+        });
+        //let tpl = render.viewEngine('index.html', {})
+        res.end(JSON.stringify(data));
+    } else {
+        res.writeHead(200, {
+            'Content-Type': 'application/json'
+        });
+        //let tpl = render.viewEngine('index.html', {})
+        res.end(JSON.stringify({ error: 1 }));
+    }
+};
 exports.saveMsg = async function(userInfo, fn) {
     userInfo.create_time = Utils.Dates.Format("yyyy-MM-dd hh:mm:ss");
     let data = await Message.saveMsg(userInfo);
