@@ -5,27 +5,36 @@ const io = require('socket.io').listen(server);
 const fs = require('fs')
 const Cmessage = require('./controllers/message');
 io.on('connection', function(socket) {
-    socket.on('firstLogin', data => {
-        if(data.firstLogin){
-            Cmessage.updateUserLogin(data, msg => {
+    let userInfo = ''
+    socket.on('message', data => {
+        if (data.firstLogin) {
+            userInfo = data
+            Cmessage.updateUserLogin(userInfo, msg => {
                 io.emit('historyMsg', msg)
-                data.firstTime = false
+                    //io.close('historyMsg')
+                    //socket.close()
             })
-
         }
     })
     socket.on('foo', function(data) {
-        if (!data.firstLogin) {
-            Cmessage.saveMsg(data, datas => {
-                io.emit('msg', { error: 0, userInfo: data });
-            })
-        }
+        Cmessage.saveMsg(data, datas => {
+            io.emit('msg', { error: 0, userInfo: data });
+        })
     });
     socket.on('reconnect', function() {
         console.log("sadasdfas");
 
     });
+    socket.on('error', (error) => {
+        // ...
+        console.log(error)
+    });
     socket.on('disconnect', function(data) {
-        console.log(data,socket)
+        Cmessage.updateUserLogout(userInfo, 0, data => {
+                console.log(data)
+            })
+            // socket.on('logout_time', function(data) {
+            //     console.log(data)
+            // })
     });
 });
