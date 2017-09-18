@@ -3,38 +3,63 @@
 <title>im</title>
 <script src="./lib/socket.io.js" type="text/javascript"></script>
 <link rel="stylesheet" type="text/css" href="./css/style.css">
-
+<script src="./utils/jquery-3.2.1.min.js" type="text/javascript"></script>
+<style>
+</style>
 <body>
-    <div id="messagelist" style="width:500px;height:300px">
-
-    </div>
-    <div>
-        <textarea name="" id="msg" cols="50" rows="5"></textarea>
-        <button id="sendBtn">发送</button>
+    <h3 style="text-align:center">聊天室</h3>
+    <div id="show"></div>
+    <div class="comment">
+      <div class="com_form">
+        <span class="emotion">表情</span>
+        <textarea class="input" id="saytext" name="saytext" cols="70" rows="5"></textarea>
+        <p>
+          <input type="button" class="sub_btn" value="发送">
+        </p>
+      </div>
     </div>
 </body>
+<script src="./utils/face.js" type="text/javascript"></script>
 <script>
-    var socket = io.connect('127.0.0.1:3000'), //与服务器进行连接
-        button = document.getElementById('sendBtn'),
-        inputData = document.getElementById('msg'),
-        messagelist = document.getElementById('messagelist');
+    $(function(){
+    var socket = io.connect('http://192.168.100.137:8080'); //与服务器进行连接
+    let userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    $('.emotion').qqFace({
+            id : 'facebox', 
+            assign:'saytext', 
+            path:'./images/gif/'	//表情存放的路径
+    });  
     socket.on('connect', function () {
-        let userInfo = JSON.parse(localStorage.getItem('userInfo'));
-        socket.send(userInfo);
-    socket.on('message', function (msg) {
-      // my msg
-    });
-    button.onclick = function() {
-        let userInfo = JSON.parse(localStorage.getItem('userInfo'));
-        userInfo.message = inputData.value
-        socket.emit('foo', userInfo); //发送一个名为foo的事件，并且传递一个字符串数据‘hello’
-    }
+    socket.send(userInfo);
+    // button.onclick = function() {
+    //     let userInfo = JSON.parse(localStorage.getItem('userInfo'));
+    //     userInfo.message = inputData.value
+    //     socket.emit('foo', userInfo); //发送一个名为foo的事件，并且传递一个字符串数据‘hello’
+    // }
+    $(".sub_btn").click(function(){
+        var str = $("#saytext").val();
+        userInfo.message = replace_em(str)
+        socket.emit('foo', userInfo);
+        $("#saytext").val("")
+        //$("#show").html(replace_em(str));
+	});
     socket.on('msg', function(data) {
         var msglist = document.createElement("p");
-        msglist.innerHTML = data.userInfo.user_name + '说：' + data.userInfo.message
-        messagelist.appendChild(msglist)
+        msglist.innerHTML = data.userInfo.user_name + '：' + data.userInfo.message
+        $("#show").append(msglist)
     })
     })
-</script>
+});
 
+//字符串转表情
+function replace_em(str){
+	str = str.replace(/\</g,'&lt;');
+	str = str.replace(/\>/g,'&gt;');
+	str = str.replace(/\n/g,'<br/>');
+	str = str.replace(/\[em_([0-9]*)\]/g,'<img src="./images/gif/$1.gif" border="0" />');
+	return str;
+}
+
+
+</script>
 </html>
