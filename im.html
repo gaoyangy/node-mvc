@@ -30,7 +30,8 @@
             path:'./images/gif/'	//表情存放的路径
     });  
     socket.on('connect', function () {
-    socket.send(userInfo);
+    userInfo.firstLogin = true;
+    socket.emit('firstLogin', userInfo);
     // button.onclick = function() {
     //     let userInfo = JSON.parse(localStorage.getItem('userInfo'));
     //     userInfo.message = inputData.value
@@ -42,7 +43,15 @@
         socket.emit('foo', userInfo);
         $("#saytext").val("")
         //$("#show").html(replace_em(str));
-	});
+    });
+    socket.on('historyMsg', data => {
+        console.log(data)
+        data.forEach(function(element) {
+            var msglist = document.createElement("p");
+        msglist.innerHTML = element.user_name + '：' + element.msg
+        $("#show").append(msglist)
+        }, this);
+    })
     socket.on('msg', function(data) {
         var msglist = document.createElement("p");
         msglist.innerHTML = data.userInfo.user_name + '：' + data.userInfo.message

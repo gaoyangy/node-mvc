@@ -62,7 +62,6 @@ module.exports = () => {
 
     router.use((req, res, next) => {
         readFile(res,req)
-
     });
     return router
 }
