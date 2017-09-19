@@ -60,7 +60,7 @@ exports.updateUserLogout = (userInfo) => {
     });
 }
 exports.messageLst = (update_time) => {
-        let sql = `SELECT i.user_name,m.* FROM im i LEFT JOIN message m on i.uuid=m.uuid  WHERE create_time<'${update_time}' limit 10`
+        let sql = `SELECT i.user_name,m.* FROM im i LEFT JOIN message m on i.uuid=m.uuid  WHERE create_time<'${update_time}' order by id desc limit 10`
             //let sql = `UPDATE im SET login_time = '${login_time}' WHERE uuid = '${userInfo.uuid}'`
             //let sql = `INSERT INTO im  (uuid, msg,create_time) VALUES  (${userInfo.uuid},'${userInfo.message}','${userInfo.create_time}')`
         return new Promise((resolve, reject) => {
@@ -82,7 +82,7 @@ exports.messageLst = (update_time) => {
     }
     //
 exports.getMsgList = (prams, new_time) => {
-    let sql = `SELECT i.user_name,m.* FROM im i LEFT JOIN message m on i.uuid=m.uuid  WHERE create_time<'${new_time}' limit ${prams.sum}`
+    let sql = `SELECT i.user_name,m.* FROM im i LEFT JOIN message m on i.uuid=m.uuid  WHERE create_time<'${new_time}' order by id desc limit ${prams.sum}`
         //let sql = `UPDATE im SET login_time = '${login_time}' WHERE uuid = '${userInfo.uuid}'`
         //let sql = `INSERT INTO im  (uuid, msg,create_time) VALUES  (${userInfo.uuid},'${userInfo.message}','${userInfo.create_time}')`
     return new Promise((resolve, reject) => {

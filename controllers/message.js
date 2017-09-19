@@ -48,8 +48,11 @@ exports.updateUserLogin = async function(userInfo, fn) {
         console.log(data)
     });
     let getlist = await Message.messageLst(update_time)
+    getlist.forEach(function(element) {
+        element.create_time = new Date(element.create_time).Format("yyyy-MM-dd hh:mm:ss")
+    }, this);
     if (data && getlist) {
-        fn(getlist)
+        fn(getlist.reverse())
     } else {
         fn({ error: 1 })
     }

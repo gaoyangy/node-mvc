@@ -7,12 +7,12 @@ const Cmessage = require('./controllers/message');
 io.on('connection', function(socket) {
     let userInfo = ''
     socket.on('message', data => {
+        userInfo = data
         if (data.firstLogin) {
-            userInfo = data
             Cmessage.updateUserLogin(userInfo, msg => {
+                //io.close('historyMsg')
+                //socket.close()
                 io.emit('historyMsg', msg)
-                    //io.close('historyMsg')
-                    //socket.close()
             })
         }
     })

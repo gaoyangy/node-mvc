@@ -1,7 +1,7 @@
 var db = require('../config/database');
 
 
-exports.findId = (id, fn) => {
+exports.findId = (id) => {
     let sql = `SELECT * FROM im WHERE uuid =${id}`
     return new Promise((resolve, reject) => {
         db.getConnection(function(err, connection) {
@@ -19,7 +19,7 @@ exports.findId = (id, fn) => {
         })
     })
 }
-exports.findName = (params, fn) => {
+exports.findName = (params) => {
     let sql = `SELECT * FROM im WHERE user_name ='${params.user_name}'`
     return new Promise((resolve, reject) => {
         db.getConnection(function(err, connection) {
