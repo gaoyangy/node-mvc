@@ -21,14 +21,6 @@ io.on('connection', function(socket) {
             io.emit('msg', { error: 0, userInfo: data });
         })
     });
-    socket.on('reconnect', function() {
-        console.log("sadasdfas");
-
-    });
-    socket.on('error', (error) => {
-        // ...
-        console.log(error)
-    });
     socket.on('disconnect', function(data) {
         Cmessage.updateUserLogout(userInfo, 0, data => {
                 console.log(data)
