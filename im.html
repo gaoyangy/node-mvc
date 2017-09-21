@@ -25,6 +25,7 @@
         </div>
     </div>
     <div class="history">
+        <h3 style="text-align:center">消息记录</h3>
         <div class="content"></div>
     </div>
 </body>
@@ -51,10 +52,21 @@
             sessionStorage.setItem('sum', sum)
             http('POST', '/more/message', reqBody).then(data => {
                 if (data) {
-                    data.forEach(function(element) {
-                    var msglist = document.createElement("p");
-                    msglist.innerHTML = element.user_name + '：' + element.msg
-                    $(".history").append(msglist)
+                //     data.forEach(function(element) {
+                //     var msglist = document.createElement("p");
+                //     msglist.innerHTML = element.user_name + '：' + element.msg
+                //     $(".history").append(msglist)
+                // }, this);
+                data.forEach(function(element) {
+                    var msglist = document.createElement("div");
+                    if (element.uuid === userInfo.uuid) {
+                        msglist.innerHTML = `<div class="right"><p class="content">${element.msg}</p><div class="user-self">${element.user_name}</div></div>`                  
+                        $(".history").append(msglist)
+                    } else {
+                        msglist.innerHTML = `<div class="left"><div class="user-them">${element.user_name}</div><p class="content">${element.msg}</p></div>`
+                        $(".history").append(msglist)
+                    }
+                    
                 }, this);
                 }
             }).catch(err => {
@@ -86,21 +98,21 @@
                 data.forEach(function(element) {
                     var msglist = document.createElement("div");
                     if (element.uuid === userInfo.uuid) {
-                        msglist.innerHTML = `<div>${element.msg} <div class="user-self">${element.user_name}</div></div>`                  
+                        msglist.innerHTML = `<div class="right"><p class="content">${element.msg}</p><div class="user-self">${element.user_name}</div></div>`                  
                         $("#show").append(msglist)
                     } else {
-                        msglist.innerHTML = `<div><div class="user-them">${element.user_name}</div>${element.msg}</div>`
+                        msglist.innerHTML = `<div class="left"><div class="user-them">${element.user_name}</div><p class="content">${element.msg}</p></div>`
                         $("#show").append(msglist)
                     }
                     
                 }, this);
             })
             socket.on('msg', function(data) {
-                var msglist = document.createElement("p");
+                var msglist = document.createElement("div");
                 if (data.userInfo.uuid === userInfo.uuid) {
-                    msglist.innerHTML = `<div style="float:right">${data.userInfo.message} <div class="user-self">${data.userInfo.user_name}</div></div>`
+                    msglist.innerHTML = `<div class="right"><p class="content">${data.userInfo.message}</p> <span class="triangle-bottomright"></span><div class="user-self">${data.userInfo.user_name}</div></div>`
                 } else {
-                    msglist.innerHTML = `<div>${data.userInfo.message} <div class="user-them">${data.userInfo.user_name}</div></div>`                    
+                    msglist.innerHTML = `<div class="left"><div class="user-them">${data.userInfo.user_name}</div><div class="content">${data.userInfo.message} </div></div>`                    
                 }
                 $("#show").append(msglist)
             }); //logout

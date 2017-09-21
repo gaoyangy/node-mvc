@@ -418,9 +418,6 @@ span.emotion:hover {
 .message {
 	display: flex;
 }
-.history {
-	display: inline-block
-}
 .user-self {
 	display: inline-block;
 	width: 50px;
@@ -430,6 +427,7 @@ span.emotion:hover {
 	background-color: #E6F8FD;
 	border: 1 solid #E6F8FD;
 	border-radius: 25px;
+	overflow: hidden;
 }
 .user-them {
 	display: inline-block;
@@ -438,7 +436,37 @@ span.emotion:hover {
 	line-height: 50px;
 	text-align:center;
 	background-color: #482D7C;
-	border: 1 solid #254A99;
 	border-radius: 25px;
 	margin: 15px 30px  15px 0px;
+	color: #fff;
+	overflow: hidden;
 }
+.right {
+text-align: right;
+margin-right: 30px;
+}
+.left {
+	margin-left: 25px;
+}
+.content {
+	display: inline-block;
+	white-space: pre-wrap;
+	border: 1px solid #00C0FA;
+	border-radius: 6px;
+	background: #00C0FA;
+	color: #fff;
+	position: relative;
+	padding: 3px 10px;
+	top: -18px;
+	right: 20px;
+}
+.left>.content {
+	position: relative;
+	top: -34px;
+}
+/* .triangle-bottomright {
+	width: 0;
+	height: 0;
+	border-bottom: 20px solid red;
+	border-right: 20px solid transparent;
+} */
