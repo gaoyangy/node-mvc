@@ -413,5 +413,32 @@ span.emotion:hover {
 }
 
 #show {
-	min-height: 600px
+	min-height: 600px;
+}
+.message {
+	display: flex;
+}
+.history {
+	display: inline-block
+}
+.user-self {
+	display: inline-block;
+	width: 50px;
+	height: 50px;
+	line-height: 50px;
+	text-align:center;
+	background-color: #E6F8FD;
+	border: 1 solid #E6F8FD;
+	border-radius: 25px;
+}
+.user-them {
+	display: inline-block;
+	width: 50px;
+	height: 50px;
+	line-height: 50px;
+	text-align:center;
+	background-color: #482D7C;
+	border: 1 solid #254A99;
+	border-radius: 25px;
+	margin: 15px 30px  15px 0px;
 }

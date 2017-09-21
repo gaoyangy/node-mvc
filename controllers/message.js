@@ -54,16 +54,11 @@ exports.updateUserLogin = async function(userInfo, fn) {
     getlist.forEach(function(element) {
         element.create_time = new Date(element.create_time).Format("yyyy-MM-dd hh:mm:ss")
     }, this);
-<<<<<<< Updated upstream
-    if (data && getlist) {
-        fn(getlist.reverse())
-=======
     let list = getlist.sort((elem, relem) => {
         return elem.id - relem.id
     })
     if (data && list) {
         fn(list)
->>>>>>> Stashed changes
     } else {
         fn({ error: 1 })
     }
