@@ -11,7 +11,6 @@ io.on('connection', function(socket) {
         if (data.firstLogin) {
             Cmessage.updateUserLogin(userInfo, msg => {
                 //io.close('historyMsg')
-                //socket.close()
                 io.emit('historyMsg', msg)
             })
         }
