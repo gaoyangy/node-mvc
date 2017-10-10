@@ -2,13 +2,12 @@
 <html>
 <head>
 <meta charset="utf-8">
-<title>聊天室 - editor:yinq</title>
+<title>聊天室</title>
 <link rel="shortcut icon" href="favicon.png">
 <link rel="icon" href="./images/favicon.png" type="image/x-icon">
 <link type="text/css" rel="stylesheet" href="./css/content.css">
 <script type="text/javascript" src="./utils/jquery-3.2.1.min.js"></script>
 </head>
-
 <body>
 <div class="chatbox">
   <div class="chat_top fn-clear">
@@ -18,8 +17,8 @@
       <div class="uname">
         河图<i class="fontico down"></i>
         <ul class="managerbox">
-          <li><a href="#"><i class="fontico lock"></i>修改密码</a></li>
-          <li><a href="#"><i class="fontico logout"></i>退出登录</a></li>
+          <li><a href="./reset.html"><i class="fontico lock"></i>修改密码</a></li>
+          <li><a href="#" onclick="logOut()"><i class="fontico logout"></i>退出登录</a></li>
         </ul>
       </div>
     </div>
@@ -134,6 +133,9 @@ function sendMessage(event, from_name, to_uid, to_uname){
 	$("#message_box").append(htmlData);
 	$('#message_box').scrollTop($("#message_box")[0].scrollHeight + 20);
 	$("#message").val('');
+}
+function logOut() {
+  window.location.pathname = "./index.html"
 }
 </script>
 </body>

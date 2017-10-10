@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<meta charset="utf-8" />
+<title>login</title>
+<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+<script src="./utils/http.js" type="text/javascript"></script>
+<link rel="stylesheet" href="./css/reset.css" />
+<link rel="stylesheet" href="./css/login.css" />
+<script type="text/javascript" src="./utils/jquery-3.2.1.min.js"></script>
+<body>
+    <div class="page">
+        <div class="loginwarrp">
+            <div class="logo">修改密码</div>
+            <div class="login_form">
+                <form id="Login" name="Login">
+                    <li class="login-item">
+                        <span>用户名：</span>
+                        <input type="text" id="userName" name="UserName" class="login_input" >
+                        <span id="count-msg" class="error"></span>
+                    </li>
+                    <li class="login-item">
+                        <span>新 密码：</span>
+                        <input type="password" id="password" name="password" class="login_input" >
+                        <span id="password-msg" class="error"></span>
+                    </li>
+                    <li class="login-item">
+                        <span>确认密码：</span>
+                        <input type="password" id="password" name="password" class="login_input" >
+                        <span id="password-msg" class="error"></span>
+                    </li>
+                    <li class="login-sub">
+                        <input type="button" name="Submit" onclick="loadXMLDoc()" value="确认" />
+                        <input type="button" onclick="cancel()" value="取消" />
+                    </li>                      
+               </form>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    window.onload = function() {
+			var config = {
+				vx : 4,
+				vy : 4,
+				height : 2,
+				width : 2,
+				count : 100,
+				color : "121, 162, 185",
+				stroke : "100, 200, 180",
+				dist : 6000,
+				e_dist : 20000,
+				max_conn : 10
+			}
+			CanvasParticle(config);
+	}
+    function loadXMLDoc() {
+        let user_name = document.getElementById("userName").value;
+        let password = document.getElementById("password").value;
+        let reqBody = {
+            user_name: user_name,
+            password: password
+        }
+        http('POST', '/login', reqBody).then(data => {
+            if (data) {
+                localStorage.setItem('userInfo', JSON.stringify(data.userInfo));
+                window.location.href = "/content.html";
+            }
+        }).catch(err => {
+            alert(err.msg)
+            console.log(err)
+        })
+    }
+    function cancel () {
+      history.go(-1)
+    }
+</script>
+<script type="text/javascript" src="./utils/canvas-particle.js"></script>
+</html>
