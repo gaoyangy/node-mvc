@@ -1,3 +1,24 @@
+body, html {
+  margin: 0;
+  padding: 0;
+}
+
+canvas {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+canvas div {
+  background-color: transparent;
+}
+
+#scene {
+  background-color: black;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 @-webkit-keyframes animate-cloud {
 	from {
 		background-position: 600px 100%
@@ -459,6 +480,8 @@ margin-right: 30px;
 	padding: 3px 10px;
 	top: -18px;
 	right: 20px;
+	max-width: 350px;
+	word-wrap:break-word;
 }
 .left>.content {
 	position: relative;

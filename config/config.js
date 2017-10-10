@@ -1,10 +1,11 @@
 module.exports = {
     mysql_dev: {
-        host: 'localhost',
+        host: '47.94.3.54',
         user: 'root',
         password: 'root',
         database: 'im',
-        connectionLimit: 50,
-        supportBigNumbers: true
+        connectionLimit: 500,
+        supportBigNumbers: true,
+        port:3306
     }
 };
