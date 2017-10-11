@@ -3,10 +3,14 @@
 <head>
 <meta charset="utf-8">
 <title>聊天室</title>
+<script src="./lib/socket.io.js" type="text/javascript"></script>
 <link rel="shortcut icon" href="favicon.png">
 <link rel="icon" href="./images/favicon.png" type="image/x-icon">
+<link rel="stylesheet" type="text/css" href="./css/style.css">
 <link type="text/css" rel="stylesheet" href="./css/content.css">
 <script type="text/javascript" src="./utils/jquery-3.2.1.min.js"></script>
+<script src="./utils/http.js" type="text/javascript"></script>
+<script src="./utils/face.js" type="text/javascript"></script>
 </head>
 <body>
 <div class="chatbox">
@@ -32,6 +36,7 @@
             <div class="msg">近日，TIOBE发布了2014年9月的编程语言排行榜，Java、C++跌至历史最低点，前三名则没有变化，依旧是C、Java、Objective-C。</div>
             <div class="name_time">猫猫 · 3分钟前</div>
           </div>
+          <div id="show"></div>
         </div>
         
         <div class="msg_item fn-clear">
@@ -57,6 +62,7 @@
         <div class="facebox fn-clear">
           <div class="expression"></div>
           <div class="chat_type" id="chat_type">群聊</div>
+          <span class="emotion">表情</span>
           <button name="" class="sub_but">提 交</button>
         </div>
       </div>
@@ -71,8 +77,113 @@
     </div>
   </div>
 </div>
+
 <script type="text/javascript">
+ $(function() {
+        var socket = io.connect('http://47.94.3.54:8080'); //与服务器进行连接192.168.2.102
+        //var socket = io.connect('http://192.168.2.102:8080'); //与服务器进行连接192.168.2.102
+        //var socket = io.connect('http://192.168.100.137:8080'); //与服务器进行连接192.168.2.102
+        //var socket = io.connect('http://192.168.2.101:8080'); //与服务器进行连接192.168.2.102
+        let userInfo = JSON.parse(localStorage.getItem('userInfo'));
+        userInfo.firstLogin = true;
+        $('.emotion').qqFace({
+            id: 'facebox',
+            assign: 'saytext',
+            path: './images/gif/' //表情存放的路径
+        });
+        $('.more').click(function() {
+            let sum = sessionStorage.getItem("sum") * 1 + 10
+            let reqBody = {
+                userInfo: userInfo,
+                sum: +sum
+            }
+            sessionStorage.setItem('sum', sum)
+            http('POST', '/more/message', reqBody).then(data => {
+                if (data) {
+                //     data.forEach(function(element) {
+                //     var msglist = document.createElement("p");
+                //     msglist.innerHTML = element.user_name + '：' + element.msg
+                //     $(".history").append(msglist)
+                // }, this);
+                data.forEach(function(element) {
+                    var msglist = document.createElement("div");
+                    if (element.uuid === userInfo.uuid) {
+                        msglist.innerHTML = `<div class="right"><p class="content">${element.msg}</p><div class="user-self">${element.user_name}</div></div>`                  
+                        $(".history").append(msglist)
+                    } else {
+                        msglist.innerHTML = `<div class="left"><div class="user-them">${element.user_name}</div><p class="content">${element.msg}</p></div>`
+                        $(".history").append(msglist)
+                    }
+                    
+                }, this);
+                }
+            }).catch(err => {
+                alert(err.msg)
+                console.log(err)
+            })
+        });
+        socket.on('connect', function() {
+            socket.send(userInfo);
+            // button.onclick = function() {
+            //     let userInfo = JSON.parse(localStorage.getItem('userInfo'));
+            //     userInfo.message = inputData.value
+            //     socket.emit('foo', userInfo); //发送一个名为foo的事件，并且传递一个字符串数据‘hello’
+            // }
+            $(".sub_btn").click(function() {
+                var str = $("#saytext").val();
+                userInfo.message = replace_em(str)
+                if (!userInfo.message) {
+                    alert('消息不能为空')
+                    return;
+                }
+                socket.emit('foo', userInfo);
+                $("#saytext").val("")
+                    //$("#show").html(replace_em(str));
+            });
+            socket.on('historyMsg', data => {
+                console.log(data)
+                userInfo.firstLogin = false
+                data.forEach(function(element) {
+                    var msglist = document.createElement("div");
+                    if (element.uuid === userInfo.uuid) {
+                        msglist.innerHTML = `<div class="right"><p class="content">${element.msg}</p><div class="user-self">${element.user_name}</div></div>`                  
+                        $("#show").append(msglist)
+                    } else {
+                        msglist.innerHTML = `<div class="left"><div class="user-them">${element.user_name}</div><p class="content">${element.msg}</p></div>`
+                        $("#show").append(msglist)
+                    }
+                    
+                }, this);
+            })
+            socket.on('msg', function(data) {
+                var msglist = document.createElement("div");
+                if (data.userInfo.uuid === userInfo.uuid) {
+                    msglist.innerHTML = `<div class="right"><p class="content">${data.userInfo.message}</p> <span class="triangle-bottomright"></span><div class="user-self">${data.userInfo.user_name}</div></div>`
+                } else {
+                    msglist.innerHTML = `<div class="left"><div class="user-them">${data.userInfo.user_name}</div><div class="content">${data.userInfo.message} </div></div>`                    
+                }
+                $("#show").append(msglist)
+            }); //logout
+            socket.on('logout', function(data) {
+                socket.emit('logout_time', userInfo);
+            })
+        })
+    });
+
+    //字符串转表情
+    function replace_em(str) {
+        str = str.replace(/\</g, '&lt;');
+        str = str.replace(/\>/g, '&gt;');
+        str = str.replace(/\n/g, '<br/>');
+        str = str.replace(/\[em_([0-9]*)\]/g, '<img src="./images/gif/$1.gif" border="0" />');
+        return str;
+    }
 $(document).ready(function(e) {
+  //
+
+
+
+  //
 	$('#message_box').scrollTop($("#message_box")[0].scrollHeight + 20);
 	$('.uname').hover(
 	    function(){
@@ -82,7 +193,8 @@ $(document).ready(function(e) {
 		    $('.managerbox').stop(true, true).slideUp(100);
 		}
 	);
-	
+ 
+  //
 	var fromname = $('#fromname').val();
 	var to_uid   = 0; // 默认为0,表示发送给所有用户
 	var to_uname = '';
