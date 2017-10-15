@@ -30,33 +30,32 @@
   <div class="chat_message fn-clear">
     <div class="chat_left">
       <div class="message_box" id="message_box">
-        <div class="msg_item fn-clear">
+        <!--<div class="msg_item fn-clear">
           <div class="uface"><img src="./images/53f44283a4347.jpg" width="40" height="40"  alt=""/></div>
           <div class="item_right">
             <div class="msg">近日，TIOBE发布了2014年9月的编程语言排行榜，Java、C++跌至历史最低点，前三名则没有变化，依旧是C、Java、Objective-C。</div>
             <div class="name_time">猫猫 · 3分钟前</div>
           </div>
-          <div id="show"></div>
-        </div>
+        </div>-->
         
-        <div class="msg_item fn-clear">
+        <!--<div class="msg_item fn-clear">
           <div class="uface"><img src="images/53f442834079a.jpg" width="40" height="40"  alt=""/></div>
           <div class="item_right">
             <div class="msg">(Visual) FoxPro, 4th Dimension/4D, Alice, APL, Arc, Automator, Awk, Bash, bc, Bourne shell, C++CLI, CFML, cg, CL (OS/400), Clean, Clojure, Emacs Lisp, Factor, Forth, Hack, Icon, Inform, Io, Ioke, J, JScript.NET, LabVIEW, LiveCode, M4, Magic, Max/MSP, Modula-2, Moto, NATURAL, OCaml, OpenCL, Oz, PILOT, Programming Without Coding Technology, Prolog, Pure Data, Q, RPG (OS/400), S, Smalltalk, SPARK, Standard ML, TOM, VBScript, Z shell</div>
             <div class="name_time">白猫 · 1分钟前</div>
           </div>
-        </div>
+        </div>-->
         
-        <div class="msg_item fn-clear">
+        <!--<div class="msg_item fn-clear">
           <div class="uface"><img src="images/hetu.jpg" width="40" height="40"  alt=""/></div>
           <div class="item_right">
             <div class="msg own">那个统计表也不能说明一切</div>
             <div class="name_time">河图 · 30秒前</div>
           </div>
-        </div>
+        </div>-->
       </div>
       <div class="write_box">
-        <textarea id="message" name="message" class="write_area" placeholder="说点啥吧..."></textarea>
+        <textarea id="message" name="message"  class="write_area" placeholder="说点啥吧..."></textarea>
         <input type="hidden" name="fromname" id="fromname" value="河图" />
         <input type="hidden" name="to_uid" id="to_uid" value="0">
         <div class="facebox fn-clear">
@@ -79,16 +78,16 @@
 </div>
 
 <script type="text/javascript">
+let userInfo = JSON.parse(localStorage.getItem('userInfo'));
  $(function() {
         var socket = io.connect('http://47.94.3.54:8080'); //与服务器进行连接192.168.2.102
         //var socket = io.connect('http://192.168.2.102:8080'); //与服务器进行连接192.168.2.102
         //var socket = io.connect('http://192.168.100.137:8080'); //与服务器进行连接192.168.2.102
         //var socket = io.connect('http://192.168.2.101:8080'); //与服务器进行连接192.168.2.102
-        let userInfo = JSON.parse(localStorage.getItem('userInfo'));
         userInfo.firstLogin = true;
         $('.emotion').qqFace({
             id: 'facebox',
-            assign: 'saytext',
+            assign: 'message',
             path: './images/gif/' //表情存放的路径
         });
         $('.more').click(function() {
@@ -109,10 +108,10 @@
                     var msglist = document.createElement("div");
                     if (element.uuid === userInfo.uuid) {
                         msglist.innerHTML = `<div class="right"><p class="content">${element.msg}</p><div class="user-self">${element.user_name}</div></div>`                  
-                        $(".history").append(msglist)
+                        $(".message_box").append(msglist)
                     } else {
                         msglist.innerHTML = `<div class="left"><div class="user-them">${element.user_name}</div><p class="content">${element.msg}</p></div>`
-                        $(".history").append(msglist)
+                        $(".message_box").append(msglist)
                     }
                     
                 }, this);
@@ -129,15 +128,15 @@
             //     userInfo.message = inputData.value
             //     socket.emit('foo', userInfo); //发送一个名为foo的事件，并且传递一个字符串数据‘hello’
             // }
-            $(".sub_btn").click(function() {
-                var str = $("#saytext").val();
+            $(".sub_but").click(function() {
+                var str = $("#message").val();
                 userInfo.message = replace_em(str)
                 if (!userInfo.message) {
-                    alert('消息不能为空')
+                    //alert('消息不能为空')
                     return;
                 }
                 socket.emit('foo', userInfo);
-                $("#saytext").val("")
+                $("#message").val("")
                     //$("#show").html(replace_em(str));
             });
             socket.on('historyMsg', data => {
@@ -147,10 +146,10 @@
                     var msglist = document.createElement("div");
                     if (element.uuid === userInfo.uuid) {
                         msglist.innerHTML = `<div class="right"><p class="content">${element.msg}</p><div class="user-self">${element.user_name}</div></div>`                  
-                        $("#show").append(msglist)
+                        $("#message_box").append(msglist)
                     } else {
                         msglist.innerHTML = `<div class="left"><div class="user-them">${element.user_name}</div><p class="content">${element.msg}</p></div>`
-                        $("#show").append(msglist)
+                        $("#message_box").append(msglist)
                     }
                     
                 }, this);
@@ -162,14 +161,13 @@
                 } else {
                     msglist.innerHTML = `<div class="left"><div class="user-them">${data.userInfo.user_name}</div><div class="content">${data.userInfo.message} </div></div>`                    
                 }
-                $("#show").append(msglist)
+                $("#message_box").append(msglist)
             }); //logout
             socket.on('logout', function(data) {
                 socket.emit('logout_time', userInfo);
             })
         })
     });
-
     //字符串转表情
     function replace_em(str) {
         str = str.replace(/\</g, '&lt;');
@@ -179,11 +177,6 @@
         return str;
     }
 $(document).ready(function(e) {
-  //
-
-
-
-  //
 	$('#message_box').scrollTop($("#message_box")[0].scrollHeight + 20);
 	$('.uname').hover(
 	    function(){
@@ -216,9 +209,9 @@ $(document).ready(function(e) {
 	    $('#message').focus().attr("placeholder", "您对"+to_uname+"说：");
 	});
 	
-	$('.sub_but').click(function(event){
-	    sendMessage(event, fromname, to_uid, to_uname);
-	});
+	// $('.sub_but').click(function(event){
+	//     sendMessage(event, fromname, to_uid, to_uname);
+	// });
 	
 	/*按下按钮或键盘按键*/
 	$("#message").keydown(function(event){
@@ -247,7 +240,9 @@ function sendMessage(event, from_name, to_uid, to_uname){
 	$("#message").val('');
 }
 function logOut() {
-  window.location.pathname = "./index.html"
+    http('POST','user/logout',userInfo).then(() => {
+        window.location.pathname = "./index.html"
+    }).catch(error => {console.log(error)})
 }
 </script>
 </body>

@@ -5,7 +5,12 @@ const router = require('../lib/router')((err, req, res) => {
 });
 const fs = require('fs')
 const readFile = require('../readfile')
+//const session = require('../session')
     //
+const path = require('path');
+var Redis = require('ioredis');
+//var redis = new Redis();
+
 const MIME_TYPE = {
     "css": "text/css",
     "gif": "image/gif",
@@ -31,7 +36,10 @@ const actorsController = require('../controllers/actors');
 const messageController = require('../controllers/message');
 module.exports = () => {
     router.use((req, res, next) => {
-        console.info('New request arrived');
+    console.info('New request arrived');
+    //
+    //redis.set('foo', 'bar');
+    //
         next();
     });
     router.get('/', (req, res) => {
@@ -54,13 +62,18 @@ module.exports = () => {
     router.post('/login', (req, res) => {
         actorsController.getActorByName(req, res);
     });
+    router.post('/user/logout', (req, res) => {
+        actorsController.updateUserInfo(req.body.uuid,{online:0},req,res)  
+    });
     router.post('/more/message', (req, res) => {
         messageController.getMsgList(req, res);
     });
     router.get('/actors/:year/:country', (req, res) => {
         actorsController.getActorsByYearAndCountry(req, res);
     });
-
+    router.get('/user/list', (req, res) => {
+        actorsController.getUserlist(req, res);
+    });
     router.use((req, res, next) => {
         readFile(res, req)
     });

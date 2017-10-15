@@ -1,6 +1,6 @@
 const http = require('http');
 const router = require('./router/router')();
-const server = http.createServer(router).listen(8080);
+const server = http.createServer(router).listen(8001);
 const io = require('socket.io').listen(server);
 const fs = require('fs')
 const Cmessage = require('./controllers/message');
@@ -8,6 +8,8 @@ io.on('connection', function(socket) {
     let userInfo = ''
     socket.on('message', data => {
         userInfo = data
+        userInfo.online = true
+        Cmessage.updateUserInfo(userInfo.uuid,{online:1})
         if (data.firstLogin) {
             Cmessage.updateUserLogin(userInfo, msg => {
                 //io.close('historyMsg')

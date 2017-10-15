@@ -1,6 +1,7 @@
 module.exports = {
     mysql_dev: {
-        host: '47.94.3.54',
+        // host: '47.94.3.54',
+        host: '127.0.0.1',
         user: 'root',
         password: 'root',
         database: 'im',

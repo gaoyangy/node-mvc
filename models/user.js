@@ -57,3 +57,44 @@ exports.addUser = (params) => {
         });
     });
 }
+
+//
+exports.updateUserInfo = (uuid,params) => {
+    let sql = `update im  set ${Object.keys(params)} = ${Object.values(params)} where uuid = ${uuid}`
+    return new Promise((resolve, reject) => {
+        db.getConnection(function(err, connection) {
+            if (err) {
+                reject(err);
+            }
+            // make the query
+            connection.query(sql, function(err, results) {
+                if (err) {
+                    reject(err);
+                } else {
+                    results.status = true
+                    resolve(results);
+                }
+            });
+        });
+    });
+}
+//
+exports.getUserlist = (uuid,params) => {
+    let sql = `SELECT * FROM im`
+    return new Promise((resolve, reject) => {
+        db.getConnection(function(err, connection) {
+            if (err) {
+                reject(err);
+            }
+            // make the query
+            connection.query(sql, function(err, results) {
+                if (err) {
+                    reject(err);
+                } else {
+                    results.status = true
+                    resolve(results);
+                }
+            });
+        });
+    });
+}
