@@ -54,13 +54,13 @@ exports.updateUserInfo = async(uuid,updateData,req,res,type) => {
         }
 },//getUserlistgetUserlist
 //
-// exports.getUserlist = async(req,res) => {
-//     let list = await User.getUserlist();
-//     res.writeHead(200, {
-//         'Content-Type': 'application/json'
-//     });
-//     res.end(JSON.stringify({ data: list }));
-// },
+exports.getUserlists = async(req,res) => {
+    let list = await User.getUserlist();
+    res.writeHead(200, {
+        'Content-Type': 'application/json'
+    });
+    res.end(JSON.stringify({ data: list }));
+},
 //
 exports.getUuid = async() => {
     let getUuid = Math.floor(Math.random() * 90000) + 10000;

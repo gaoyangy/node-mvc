@@ -60,7 +60,7 @@ exports.updateUserLogout = (userInfo) => {
     });
 }
 exports.messageLst = (update_time) => {
-        let sql = `SELECT i.user_name,m.* FROM im i right JOIN message m on i.uuid=m.uuid ORDER BY id DESC limit 10`
+        let sql = `SELECT i.user_name,m.* FROM im i right JOIN message m on i.uuid=m.uuid  ORDER BY id DESC limit 10`
             //let sql = `UPDATE im SET login_time = '${login_time}' WHERE uuid = '${userInfo.uuid}'`
             //let sql = `INSERT INTO im  (uuid, msg,create_time) VALUES  (${userInfo.uuid},'${userInfo.message}','${userInfo.create_time}')`
         return new Promise((resolve, reject) => {

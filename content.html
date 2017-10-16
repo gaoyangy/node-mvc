@@ -19,7 +19,8 @@
     <div class="uinfo fn-clear">
       <div class="uface"><img src="./images/hetu.jpg" width="40" height="40"  alt=""/></div>
       <div class="uname">
-        河图<i class="fontico down"></i>
+          <span class="username"></span>
+        <i class="fontico down"></i>
         <ul class="managerbox">
           <li><a href="./reset.html"><i class="fontico lock"></i>修改密码</a></li>
           <li><a href="#" onclick="logOut()"><i class="fontico logout"></i>退出登录</a></li>
@@ -69,9 +70,9 @@
     <div class="chat_right">
       <ul class="user_list" title="双击用户私聊">
         <li class="fn-clear selected"><em>所有用户</em></li>
-        <li class="fn-clear" data-id="1"><span><img src="./images/hetu.jpg" width="30" height="30"  alt=""/></span><em>河图</em><small class="online" title="在线"></small></li>
+        <!-- <li class="fn-clear" data-id="1"><span><img src="./images/hetu.jpg" width="30" height="30"  alt=""/></span><em>河图</em><small class="online" title="在线"></small></li>
         <li class="fn-clear" data-id="2"><span><img src="./images/53f44283a4347.jpg" width="30" height="30"  alt=""/></span><em>猫猫</em><small class="online" title="在线"></small></li>
-        <li class="fn-clear" data-id="3"><span><img src="./images/53f442834079a.jpg" width="30" height="30"  alt=""/></span><em>白猫</em><small class="offline" title="离线"></small></li>
+        <li class="fn-clear" data-id="3"><span><img src="./images/53f442834079a.jpg" width="30" height="30"  alt=""/></span><em>白猫</em><small class="offline" title="离线"></small></li> -->
       </ul>
     </div>
   </div>
@@ -79,12 +80,14 @@
 
 <script type="text/javascript">
 let userInfo = JSON.parse(localStorage.getItem('userInfo'));
+
  $(function() {
         var socket = io.connect('http://127.0.0.1:8000'); //与服务器进行连接192.168.2.102
         //var socket = io.connect('http://192.168.2.102:8080'); //与服务器进行连接192.168.2.102
         //var socket = io.connect('http://192.168.100.137:8080'); //与服务器进行连接192.168.2.102
         //var socket = io.connect('http://192.168.2.101:8080'); //与服务器进行连接192.168.2.102
         userInfo.firstLogin = true;
+        $('.username').html(userInfo.user_name)
         $('.emotion').qqFace({
             id: 'facebox',
             assign: 'message',
@@ -142,18 +145,18 @@ let userInfo = JSON.parse(localStorage.getItem('userInfo'));
             });
             socket.on('historyMsg', data => {
                 console.log(data)
-            //     http('POST','/user/list').then(data =>{
-            //       data.forEach(list => {
-            //         var userList = document.createElement("div");
-            //         if (element.uuid === userInfo.uuid) {
-            //             msglist.innerHTML = `<li class="fn-clear" data-id="2"><span><img src="./images/53f44283a4347.jpg" width="30" height="30"  alt=""/></span><em>猫猫</em><small class="online" title="在线"></small></li>`                  
-            //             $("#message_box").append(userList)
-            //         } else {
-            //             msglist.innerHTML = `<li class="fn-clear" data-id="3"><span><img src="./images/53f442834079a.jpg" width="30" height="30"  alt=""/></span><em>白猫</em><small class="offline" title="离线"></small></li>`
-            //             $("#message_box").append(userList)
-            //         }
-            //       })
-            // })
+                http('POST','/user/list', userInfo).then(data =>{
+                  data.data.forEach(element => {
+                    var userList = document.createElement("div");
+                    if (element.online) {
+                        userList.innerHTML = `<li class="fn-clear" data-id="2"><span><img src="./images/53f44283a4347.jpg" width="30" height="30"  alt=""/></span><em>${element.user_name}</em><small class="online" title="在线"></small></li>`                  
+                        $(".user_list").append(userList)
+                    } else {
+                        userList.innerHTML = `<li class="fn-clear" data-id="3"><span><img src="./images/53f442834079a.jpg" width="30" height="30"  alt=""/></span><em>${element.user_name}</em><small class="offline" title="离线"></small></li>`
+                        $(".user_list").append(userList)
+                    }
+                  })
+            })
                 userInfo.firstLogin = false
                 data.forEach(function(element) {
                     var msglist = document.createElement("div");
