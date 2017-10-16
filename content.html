@@ -268,6 +268,9 @@ function logOut() {
         window.location.pathname = "./index.html"
     }).catch(error => {console.log(error)})
 }
+window.onbeforeunload = function(){  
+        return "exit?";     
+} 
 </script>
 </body>
 </html>
