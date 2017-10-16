@@ -80,7 +80,7 @@
 <script type="text/javascript">
 let userInfo = JSON.parse(localStorage.getItem('userInfo'));
  $(function() {
-        var socket = io.connect('http://47.94.3.54:8080'); //与服务器进行连接192.168.2.102
+        var socket = io.connect('http://127.0.0.1:8000'); //与服务器进行连接192.168.2.102
         //var socket = io.connect('http://192.168.2.102:8080'); //与服务器进行连接192.168.2.102
         //var socket = io.connect('http://192.168.100.137:8080'); //与服务器进行连接192.168.2.102
         //var socket = io.connect('http://192.168.2.101:8080'); //与服务器进行连接192.168.2.102
@@ -128,6 +128,7 @@ let userInfo = JSON.parse(localStorage.getItem('userInfo'));
             //     userInfo.message = inputData.value
             //     socket.emit('foo', userInfo); //发送一个名为foo的事件，并且传递一个字符串数据‘hello’
             // }
+
             $(".sub_but").click(function() {
                 var str = $("#message").val();
                 userInfo.message = replace_em(str)
@@ -141,6 +142,18 @@ let userInfo = JSON.parse(localStorage.getItem('userInfo'));
             });
             socket.on('historyMsg', data => {
                 console.log(data)
+            //     http('POST','/user/list').then(data =>{
+            //       data.forEach(list => {
+            //         var userList = document.createElement("div");
+            //         if (element.uuid === userInfo.uuid) {
+            //             msglist.innerHTML = `<li class="fn-clear" data-id="2"><span><img src="./images/53f44283a4347.jpg" width="30" height="30"  alt=""/></span><em>猫猫</em><small class="online" title="在线"></small></li>`                  
+            //             $("#message_box").append(userList)
+            //         } else {
+            //             msglist.innerHTML = `<li class="fn-clear" data-id="3"><span><img src="./images/53f442834079a.jpg" width="30" height="30"  alt=""/></span><em>白猫</em><small class="offline" title="离线"></small></li>`
+            //             $("#message_box").append(userList)
+            //         }
+            //       })
+            // })
                 userInfo.firstLogin = false
                 data.forEach(function(element) {
                     var msglist = document.createElement("div");

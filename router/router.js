@@ -71,9 +71,9 @@ module.exports = () => {
     router.get('/actors/:year/:country', (req, res) => {
         actorsController.getActorsByYearAndCountry(req, res);
     });
-    router.get('/user/list', (req, res) => {
-        actorsController.getUserlist(req, res);
-    });
+    // router.post('/user/list', (req, res) => {
+    //     //actorsController.getUserlist(req, res);
+    // });
     router.use((req, res, next) => {
         readFile(res, req)
     });
