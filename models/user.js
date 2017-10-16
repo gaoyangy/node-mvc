@@ -39,7 +39,7 @@ exports.findName = (params) => {
 }
 
 exports.addUser = (params) => {
-    let sql = `INSERT INTO im  VALUES  (${params.uuid},'${params.user_name}','${params.password}','${params.login_time}')`
+    let sql = `INSERT INTO im  VALUES  (${params.uuid},'${params.user_name}','${params.password}','${params.login_time}','true')`
     return new Promise((resolve, reject) => {
         db.getConnection(function(err, connection) {
             if (err) {

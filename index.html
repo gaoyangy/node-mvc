@@ -23,8 +23,8 @@
                                             <span id="password-msg" class="error"></span>
                     </li>
                     <li class="login-sub">
-                        <input type="button" name="Submit" onclick="loadXMLDoc()" value="登录" />
-                        <input type="reset" name="Reset" value="注册" />
+                        <input type="button" name="Submit" onclick="loadXMLDoc(1)" value="登录" />
+                        <input type="reset" name="Reset" onclick="loadXMLDoc(0)" value="注册" />
                     </li>                      
                </form>
             </div>
@@ -47,14 +47,15 @@
 			}
 			CanvasParticle(config);
 	}
-    function loadXMLDoc() {
+    function loadXMLDoc(type) {
         let user_name = document.getElementById("userName").value;
         let password = document.getElementById("password").value;
         let reqBody = {
             user_name: user_name,
             password: password
         }
-        http('POST', '/login', reqBody).then(data => {
+        let url = type? '/login' : '/register'
+        http('POST', url, reqBody).then(data => {
             if (data) {
                 localStorage.setItem('userInfo', JSON.stringify(data.userInfo));
                 window.location.href = "/content.html";

@@ -146,15 +146,23 @@ let userInfo = JSON.parse(localStorage.getItem('userInfo'));
             socket.on('historyMsg', data => {
                 console.log(data)
                 http('POST','/user/list', userInfo).then(data =>{
-                  data.data.forEach(element => {
-                    var userList = document.createElement("div");
-                    if (element.online) {
-                        userList.innerHTML = `<li class="fn-clear" data-id="2"><span><img src="./images/53f44283a4347.jpg" width="30" height="30"  alt=""/></span><em>${element.user_name}</em><small class="online" title="在线"></small></li>`                  
-                        $(".user_list").append(userList)
-                    } else {
-                        userList.innerHTML = `<li class="fn-clear" data-id="3"><span><img src="./images/53f442834079a.jpg" width="30" height="30"  alt=""/></span><em>${element.user_name}</em><small class="offline" title="离线"></small></li>`
-                        $(".user_list").append(userList)
-                    }
+                    let user = []
+                    data.data.forEach(item => {
+                        if (item.online) {
+                            user.unshift(item)
+                        } else {
+                            user.push(item)
+                        }
+                    })
+                    user.forEach(element => {
+                        var userList = document.createElement("div");
+                        if (element.online) {
+                            userList.innerHTML = `<li class="fn-clear" data-id="2"><span><img src="./images/53f44283a4347.jpg" width="30" height="30"  alt=""/></span><em>${element.user_name}</em><small class="online" title="在线"></small></li>`                  
+                            $(".user_list").append(userList)
+                        } else {
+                            userList.innerHTML = `<li class="fn-clear" data-id="3"><span><img src="./images/53f442834079a.jpg" width="30" height="30"  alt=""/></span><em>${element.user_name}</em><small class="offline" title="离线"></small></li>`
+                            $(".user_list").append(userList)
+                        }
                   })
             })
                 userInfo.firstLogin = false
@@ -207,8 +215,8 @@ $(document).ready(function(e) {
 	var fromname = $('#fromname').val();
 	var to_uid   = 0; // 默认为0,表示发送给所有用户
 	var to_uname = '';
-	$('.user_list > li').dblclick(function(){
-		to_uname = $(this).find('em').text();
+	$('.fn-clear').dblclick(function(){
+		to_uname = $(this).find('').text();
 		to_uid   = $(this).attr('data-id');
 		if(to_uname == fromname){
 		    alert('您不能和自己聊天!');
